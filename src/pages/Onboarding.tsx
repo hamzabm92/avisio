@@ -183,7 +183,7 @@ export default function Onboarding() {
                   placeholder="Hôtel Le Beaumont"
                   required
                   className="w-full px-4 py-2.5 rounded-xl text-sm outline-none"
-                  style={{ border: '1px solid #EDE8E3', backgroundColor: '#FAF7F4', color: '#2C2420' }}
+                  style={{ border: '1px solid #EDE8E3', backgroundColor: 'white', color: '#2C2420' }}
                   onFocus={e => { e.target.style.borderColor = '#C9A96E'; }}
                   onBlur={e => { e.target.style.borderColor = '#EDE8E3'; }}
                 />
@@ -199,7 +199,7 @@ export default function Onboarding() {
                   onChange={e => setGoogleUrl(e.target.value)}
                   placeholder="https://g.page/r/xxx/review"
                   className="w-full px-4 py-2.5 rounded-xl text-sm outline-none"
-                  style={{ border: '1px solid #EDE8E3', backgroundColor: '#FAF7F4', color: '#2C2420' }}
+                  style={{ border: '1px solid #EDE8E3', backgroundColor: 'white', color: '#2C2420' }}
                   onFocus={e => { e.target.style.borderColor = '#C9A96E'; }}
                   onBlur={e => { e.target.style.borderColor = '#EDE8E3'; }}
                 />
@@ -236,7 +236,7 @@ export default function Onboarding() {
                   onChange={e => setSmsTemplate(e.target.value)}
                   rows={3}
                   className="w-full px-3 py-2.5 rounded-xl text-sm resize-none outline-none"
-                  style={{ border: '1px solid #EDE8E3', color: '#2C2420', backgroundColor: '#FAF7F4' }}
+                  style={{ border: '1px solid #EDE8E3', color: '#2C2420', backgroundColor: 'white' }}
                 />
                 <p className="text-xs mt-1" style={{ color: '#8A7F78' }}>
                   Variables : {'{prenom}'} {'{hotel}'} {'{lien}'} {'{nuits}'} {'{chambre}'}
@@ -268,7 +268,7 @@ export default function Onboarding() {
                     onChange={e => setTestPhone(e.target.value)}
                     placeholder="06 12 34 56 78"
                     className="flex-1 px-3 py-2 rounded-xl text-sm outline-none"
-                    style={{ border: '1px solid #EDE8E3', color: '#2C2420', backgroundColor: '#FAF7F4' }}
+                    style={{ border: '1px solid #EDE8E3', color: '#2C2420', backgroundColor: 'white' }}
                   />
                   <Button
                     size="sm"

@@ -114,11 +114,11 @@ export default function Login() {
                 className="w-full px-4 py-2.5 rounded-xl text-sm outline-none transition-all"
                 style={{
                   border: '1px solid #EDE8E3',
-                  backgroundColor: '#FAF7F4',
+                  backgroundColor: 'white',
                   color: '#2C2420',
                 }}
                 onFocus={e => { e.target.style.borderColor = '#C9A96E'; e.target.style.backgroundColor = 'white'; }}
-                onBlur={e => { e.target.style.borderColor = '#EDE8E3'; e.target.style.backgroundColor = '#FAF7F4'; }}
+                onBlur={e => { e.target.style.borderColor = '#EDE8E3'; e.target.style.backgroundColor = 'white'; }}
               />
             </div>
             <div>
@@ -136,11 +136,11 @@ export default function Login() {
                   className="w-full px-4 py-2.5 pr-11 rounded-xl text-sm outline-none transition-all"
                   style={{
                     border: '1px solid #EDE8E3',
-                    backgroundColor: '#FAF7F4',
+                    backgroundColor: 'white',
                     color: '#2C2420',
                   }}
                   onFocus={e => { e.target.style.borderColor = '#C9A96E'; e.target.style.backgroundColor = 'white'; }}
-                  onBlur={e => { e.target.style.borderColor = '#EDE8E3'; e.target.style.backgroundColor = '#FAF7F4'; }}
+                  onBlur={e => { e.target.style.borderColor = '#EDE8E3'; e.target.style.backgroundColor = 'white'; }}
                 />
                 <button
                   type="button"

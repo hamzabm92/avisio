@@ -245,7 +245,7 @@ export default function Reviews() {
                 rows={3}
                 placeholder="Ajouter une note interne..."
                 className="w-full px-3 py-2.5 rounded-xl text-sm resize-none outline-none"
-                style={{ border: '1px solid #EDE8E3', color: '#2C2420', backgroundColor: '#FAF7F4' }}
+                style={{ border: '1px solid #EDE8E3', color: '#2C2420', backgroundColor: 'white' }}
               />
               <Button
                 size="sm"
