@@ -55,13 +55,13 @@ export default function StatsGrid({
 
   if (loading) {
     return (
-      <div className="grid grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
         {[...Array(4)].map((_, i) => (
-          <Card key={i}>
+          <Card key={i} padding="sm">
             <div className="animate-pulse space-y-3">
-              <div className="w-10 h-10 rounded-xl" style={{ backgroundColor: '#F5EDD8' }} />
-              <div className="h-8 w-16 rounded-lg" style={{ backgroundColor: '#F5EDD8' }} />
-              <div className="h-4 w-24 rounded" style={{ backgroundColor: '#F5EDD8' }} />
+              <div className="w-9 h-9 rounded-xl" style={{ backgroundColor: '#F5EDD8' }} />
+              <div className="h-7 w-14 rounded-lg" style={{ backgroundColor: '#F5EDD8' }} />
+              <div className="h-3 w-20 rounded" style={{ backgroundColor: '#F5EDD8' }} />
             </div>
           </Card>
         ))}
@@ -70,22 +70,22 @@ export default function StatsGrid({
   }
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
       {stats.map(stat => (
-        <Card key={stat.label}>
+        <Card key={stat.label} padding="sm">
           <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
+            className="w-9 h-9 rounded-xl flex items-center justify-center mb-3"
             style={{ backgroundColor: '#F5EDD8', color: stat.color }}
           >
             {stat.icon}
           </div>
           <p
-            className="text-3xl font-bold mb-1"
+            className="text-2xl md:text-3xl font-bold mb-0.5"
             style={{ fontFamily: 'Playfair Display, serif', color: '#2C2420' }}
           >
             {stat.value}
           </p>
-          <p className="text-sm" style={{ color: '#8A7F78' }}>
+          <p className="text-xs md:text-sm leading-tight" style={{ color: '#8A7F78' }}>
             {stat.label}
           </p>
         </Card>

@@ -199,15 +199,15 @@ export default function Checkouts() {
 
   return (
     <Layout title="Départs du jour">
-      <div className="space-y-6">
+      <div className="space-y-4">
         {/* Toolbar */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-2">
             <input
               type="date"
               value={dateFilter}
               onChange={e => setDateFilter(e.target.value)}
-              className="px-3 py-2 rounded-xl text-sm outline-none"
+              className="flex-1 sm:flex-none px-3 py-2 rounded-xl text-sm outline-none"
               style={{ border: '1px solid #EDE8E3', color: '#2C2420', backgroundColor: 'white' }}
             />
             <Button
@@ -216,10 +216,10 @@ export default function Checkouts() {
               leftIcon={<RefreshCw size={14} />}
               onClick={fetchGuests}
             >
-              Actualiser
+              <span className="hidden sm:inline">Actualiser</span>
             </Button>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             {pendingCount > 0 && (
               <Button
                 variant="secondary"
@@ -227,20 +227,22 @@ export default function Checkouts() {
                 loading={sendingAll}
                 leftIcon={<Send size={14} />}
                 onClick={sendAllPending}
+                className="flex-1 sm:flex-none"
               >
-                Envoyer {pendingCount} SMS en attente
+                {pendingCount} SMS en attente
               </Button>
             )}
             <Button
               leftIcon={<Upload size={16} />}
               onClick={() => { setShowImportModal(true); setImportStep(1); }}
+              className="flex-1 sm:flex-none"
             >
               Importer CSV
             </Button>
           </div>
         </div>
 
-        {/* Guests table */}
+        {/* Guests list */}
         {loading ? (
           <div className="bg-white rounded-2xl p-8 text-center" style={{ border: '1px solid #EDE8E3' }}>
             <div className="w-8 h-8 border-2 rounded-full animate-spin mx-auto" style={{ borderColor: '#C9A96E', borderTopColor: 'transparent' }} />
@@ -255,67 +257,114 @@ export default function Checkouts() {
             />
           </div>
         ) : (
-          <div className="bg-white rounded-2xl overflow-hidden" style={{ border: '1px solid #EDE8E3' }}>
-            <table className="w-full">
-              <thead style={{ backgroundColor: '#FAF7F4' }}>
-                <tr>
-                  {['Client', 'Chambre', 'Téléphone', 'Date départ', 'Statut SMS', 'Actions'].map(h => (
-                    <th key={h} className="px-6 py-3 text-left text-xs font-medium" style={{ color: '#8A7F78' }}>
-                      {h}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {guests.map(guest => (
-                  <tr key={guest.id} style={{ borderTop: '1px solid #EDE8E3' }}>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className="w-8 h-8 rounded-xl flex items-center justify-center text-xs font-semibold shrink-0"
-                          style={{ backgroundColor: '#F5EDD8', color: '#C9A96E' }}
-                        >
-                          {guest.first_name.charAt(0).toUpperCase()}
-                        </div>
-                        <span className="text-sm font-medium" style={{ color: '#2C2420' }}>
-                          {guest.first_name}
-                        </span>
+          <>
+            {/* Mobile: card list */}
+            <div className="md:hidden space-y-3">
+              {guests.map(guest => (
+                <div
+                  key={guest.id}
+                  className="bg-white rounded-2xl p-4"
+                  style={{ border: '1px solid #EDE8E3' }}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold shrink-0"
+                        style={{ backgroundColor: '#F5EDD8', color: '#C9A96E' }}
+                      >
+                        {guest.first_name.charAt(0).toUpperCase()}
                       </div>
-                    </td>
-                    <td className="px-6 py-4 text-sm" style={{ color: '#8A7F78' }}>
-                      {guest.room_number || '—'}
-                    </td>
-                    <td className="px-6 py-4 text-sm font-mono" style={{ color: '#2C2420' }}>
-                      {formatPhoneDisplay(guest.phone)}
-                    </td>
-                    <td className="px-6 py-4 text-sm" style={{ color: '#8A7F78' }}>
-                      {formatDateFR(guest.checkout_date)}
-                    </td>
-                    <td className="px-6 py-4">
-                      <Badge status={guest.sms_status} />
-                    </td>
-                    <td className="px-6 py-4">
-                      {guest.sms_status === 'pending' && (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          leftIcon={<Send size={12} />}
-                          onClick={() => setShowSMSModal(guest)}
-                        >
-                          Envoyer SMS
-                        </Button>
-                      )}
-                      {guest.sms_status === 'sent' && guest.sms_sent_at && (
-                        <span className="text-xs" style={{ color: '#8A7F78' }}>
-                          {formatDateTime(guest.sms_sent_at)}
-                        </span>
-                      )}
-                    </td>
+                      <div>
+                        <p className="font-medium text-sm" style={{ color: '#2C2420' }}>
+                          {guest.first_name}
+                          {guest.room_number && (
+                            <span className="ml-1.5 text-xs" style={{ color: '#8A7F78' }}>Ch. {guest.room_number}</span>
+                          )}
+                        </p>
+                        <p className="text-xs font-mono mt-0.5" style={{ color: '#8A7F78' }}>
+                          {formatPhoneDisplay(guest.phone)}
+                        </p>
+                      </div>
+                    </div>
+                    <Badge status={guest.sms_status} />
+                  </div>
+                  {guest.sms_status === 'pending' && (
+                    <button
+                      onClick={() => setShowSMSModal(guest)}
+                      className="mt-3 w-full flex items-center justify-center gap-2 py-2 rounded-xl text-sm font-medium transition-colors"
+                      style={{ backgroundColor: '#F5EDD8', color: '#C9A96E' }}
+                    >
+                      <Send size={14} />
+                      Envoyer SMS
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop: table */}
+            <div className="hidden md:block bg-white rounded-2xl overflow-hidden" style={{ border: '1px solid #EDE8E3' }}>
+              <table className="w-full">
+                <thead style={{ backgroundColor: '#FAF7F4' }}>
+                  <tr>
+                    {['Client', 'Chambre', 'Téléphone', 'Date départ', 'Statut SMS', 'Actions'].map(h => (
+                      <th key={h} className="px-6 py-3 text-left text-xs font-medium" style={{ color: '#8A7F78' }}>
+                        {h}
+                      </th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {guests.map(guest => (
+                    <tr key={guest.id} style={{ borderTop: '1px solid #EDE8E3' }}>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div
+                            className="w-8 h-8 rounded-xl flex items-center justify-center text-xs font-semibold shrink-0"
+                            style={{ backgroundColor: '#F5EDD8', color: '#C9A96E' }}
+                          >
+                            {guest.first_name.charAt(0).toUpperCase()}
+                          </div>
+                          <span className="text-sm font-medium" style={{ color: '#2C2420' }}>
+                            {guest.first_name}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-sm" style={{ color: '#8A7F78' }}>
+                        {guest.room_number || '—'}
+                      </td>
+                      <td className="px-6 py-4 text-sm font-mono" style={{ color: '#2C2420' }}>
+                        {formatPhoneDisplay(guest.phone)}
+                      </td>
+                      <td className="px-6 py-4 text-sm" style={{ color: '#8A7F78' }}>
+                        {formatDateFR(guest.checkout_date)}
+                      </td>
+                      <td className="px-6 py-4">
+                        <Badge status={guest.sms_status} />
+                      </td>
+                      <td className="px-6 py-4">
+                        {guest.sms_status === 'pending' && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            leftIcon={<Send size={12} />}
+                            onClick={() => setShowSMSModal(guest)}
+                          >
+                            Envoyer SMS
+                          </Button>
+                        )}
+                        {guest.sms_status === 'sent' && guest.sms_sent_at && (
+                          <span className="text-xs" style={{ color: '#8A7F78' }}>
+                            {formatDateTime(guest.sms_sent_at)}
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </div>
 

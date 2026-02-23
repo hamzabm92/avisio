@@ -71,7 +71,7 @@ export default function Dashboard() {
 
   return (
     <Layout title="Tableau de bord">
-      <div className="space-y-8">
+      <div className="space-y-4 md:space-y-8">
         {/* Stats */}
         <StatsGrid
           googleRating={null}
@@ -82,7 +82,7 @@ export default function Dashboard() {
         />
 
         {/* Bottom grid */}
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
           <CheckoutsList guests={todayGuests} loading={loading} />
           <ReviewsFeed feedbacks={recentFeedbacks} loading={loading} />
         </div>

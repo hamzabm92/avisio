@@ -1,4 +1,3 @@
-
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -7,12 +6,15 @@ import {
   Settings,
   Star,
   Users,
+  X,
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import type { Hotel } from '../../types';
 
 interface SidebarProps {
   hotel: Hotel | null;
+  open: boolean;
+  onClose: () => void;
 }
 
 const NAV_ITEMS = [
@@ -22,24 +24,14 @@ const NAV_ITEMS = [
   { to: '/settings', icon: Settings, label: 'Paramètres' },
 ];
 
-export default function Sidebar({ hotel }: SidebarProps) {
-  const navigate = useNavigate();
-
-  async function handleLogout() {
-    await supabase.auth.signOut();
-    navigate('/login');
-  }
-
+function SidebarContent({ hotel, onClose, onLogout }: { hotel: Hotel | null; onClose: () => void; onLogout: () => void }) {
   return (
-    <aside
-      className="fixed left-0 top-0 h-screen w-64 flex flex-col"
-      style={{ backgroundColor: '#2C2420' }}
-    >
+    <div className="w-64 h-full flex flex-col" style={{ backgroundColor: '#2C2420' }}>
       {/* Logo */}
-      <div className="px-6 py-8 border-b" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+      <div className="px-6 py-7 border-b flex items-center justify-between" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
         <div className="flex items-center gap-3">
           <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center"
+            className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
             style={{ backgroundColor: '#C9A96E' }}
           >
             <MessageSquare size={16} color="white" />
@@ -51,12 +43,21 @@ export default function Sidebar({ hotel }: SidebarProps) {
             Avisio
           </span>
         </div>
-        {hotel && (
-          <p className="text-xs mt-2 truncate" style={{ color: '#8A7F78' }}>
-            {hotel.name}
-          </p>
-        )}
+        {/* Close — mobile only */}
+        <button
+          onClick={onClose}
+          className="md:hidden p-1.5 rounded-lg transition-colors"
+          style={{ color: 'rgba(255,255,255,0.5)' }}
+        >
+          <X size={20} />
+        </button>
       </div>
+
+      {hotel && (
+        <div className="px-6 py-2.5 border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+          <p className="text-xs truncate" style={{ color: '#8A7F78' }}>{hotel.name}</p>
+        </div>
+      )}
 
       {/* Navigation */}
       <nav className="flex-1 px-4 py-6 space-y-1">
@@ -64,13 +65,10 @@ export default function Sidebar({ hotel }: SidebarProps) {
           <NavLink
             key={item.to}
             to={item.to}
-            className={({ isActive }) => `
-              flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-sm font-medium
-              ${isActive
-                ? 'text-white'
-                : 'hover:bg-white/5'
-              }
-            `}
+            onClick={onClose}
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-sm font-medium ${isActive ? '' : 'hover:bg-white/5'}`
+            }
             style={({ isActive }) => isActive
               ? { backgroundColor: '#C9A96E', color: 'white' }
               : { color: 'rgba(255,255,255,0.6)' }
@@ -84,17 +82,14 @@ export default function Sidebar({ hotel }: SidebarProps) {
 
       {/* Footer */}
       <div className="px-4 py-6 border-t" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
-        {/* Plan badge */}
         {hotel && (
           <div className="mb-4 px-3 py-2 rounded-xl" style={{ backgroundColor: 'rgba(201,169,110,0.1)' }}>
             <p className="text-xs" style={{ color: '#8A7F78' }}>Plan actuel</p>
-            <p className="text-sm font-semibold capitalize" style={{ color: '#C9A96E' }}>
-              {hotel.plan}
-            </p>
+            <p className="text-sm font-semibold capitalize" style={{ color: '#C9A96E' }}>{hotel.plan}</p>
           </div>
         )}
         <button
-          onClick={handleLogout}
+          onClick={onLogout}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-colors hover:bg-white/5"
           style={{ color: 'rgba(255,255,255,0.4)' }}
         >
@@ -102,6 +97,38 @@ export default function Sidebar({ hotel }: SidebarProps) {
           Se déconnecter
         </button>
       </div>
-    </aside>
+    </div>
+  );
+}
+
+export default function Sidebar({ hotel, open, onClose }: SidebarProps) {
+  const navigate = useNavigate();
+
+  async function handleLogout() {
+    await supabase.auth.signOut();
+    navigate('/login');
+  }
+
+  return (
+    <>
+      {/* Desktop — always visible */}
+      <div className="hidden md:flex fixed left-0 top-0 h-screen z-30">
+        <SidebarContent hotel={hotel} onClose={() => {}} onLogout={handleLogout} />
+      </div>
+
+      {/* Mobile drawer overlay */}
+      {open && (
+        <div className="md:hidden fixed inset-0 z-50 flex">
+          <div
+            className="absolute inset-0"
+            style={{ backgroundColor: 'rgba(44,36,32,0.55)', backdropFilter: 'blur(3px)' }}
+            onClick={onClose}
+          />
+          <div className="relative z-10 h-full shadow-2xl">
+            <SidebarContent hotel={hotel} onClose={onClose} onLogout={handleLogout} />
+          </div>
+        </div>
+      )}
+    </>
   );
 }

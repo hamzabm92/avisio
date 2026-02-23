@@ -121,15 +121,15 @@ export default function Settings() {
 
   return (
     <Layout title="Paramètres">
-      <div className="flex gap-8">
-        {/* Sidebar nav */}
-        <div className="w-52 shrink-0">
-          <nav className="space-y-1">
+      <div className="flex flex-col md:flex-row gap-4 md:gap-8">
+        {/* Section tabs — horizontal scroll on mobile, vertical list on desktop */}
+        <div className="md:w-52 shrink-0">
+          <nav className="flex md:flex-col gap-1 overflow-x-auto pb-1 md:pb-0 md:overflow-visible">
             {SECTIONS.map(s => (
               <button
                 key={s.key}
                 onClick={() => setSection(s.key)}
-                className="w-full flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sm font-medium text-left transition-all"
+                className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sm font-medium text-left transition-all shrink-0"
                 style={section === s.key
                   ? { backgroundColor: '#F5EDD8', color: '#2C2420' }
                   : { color: '#8A7F78' }
@@ -143,7 +143,7 @@ export default function Settings() {
         </div>
 
         {/* Content */}
-        <div className="flex-1 space-y-6">
+        <div className="flex-1 space-y-6 min-w-0">
           {section === 'hotel' && (
             <Card>
               <h2 className="text-lg font-semibold mb-6" style={{ fontFamily: 'Playfair Display, serif', color: '#2C2420' }}>
@@ -216,7 +216,7 @@ export default function Settings() {
                 </div>
 
                 {/* Delay */}
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium mb-1.5" style={{ color: '#2C2420' }}>
                       Délai après checkout (heures)
@@ -248,7 +248,7 @@ export default function Settings() {
                 </div>
 
                 {/* Send hours */}
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium mb-1.5" style={{ color: '#2C2420' }}>
                       Heure min d'envoi
