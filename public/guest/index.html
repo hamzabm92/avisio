@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Votre avis compte — Avisio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --token: #2C2420;
+      --gold: #C9A96E;
+      --gold-light: #F5EDD8;
+      --green: #7EB5A6;
+      --red-soft: #C97A7A;
+      --muted: #8A7F78;
+      --bg: #FAF7F4;
+      --card: #FFFFFF;
+      --border: #EDE8E3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--token);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px 48px;
+    }
+    .card {
+      background: white;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      padding: 32px 24px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 4px 24px rgba(44,36,32,0.06);
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .logo-icon {
+      width: 48px; height: 48px;
+      background: var(--token);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .hotel-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--token);
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    .greeting {
+      text-align: center;
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+    .stars-label {
+      text-align: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--token);
+      margin-bottom: 12px;
+    }
+    .stars {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .star-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      transition: transform 0.15s;
+    }
+    .star-btn:hover, .star-btn:focus { transform: scale(1.15); outline: none; }
+    .star-svg { width: 44px; height: 44px; }
+    .action-area { margin-top: 8px; }
+    .btn-google {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%;
+      padding: 16px;
+      border-radius: 14px;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      background: var(--border);
+      color: var(--muted);
+    }
+    .btn-google.highlighted {
+      background: var(--green);
+      color: white;
+      box-shadow: 0 4px 12px rgba(126,181,166,0.35);
+    }
+    .btn-google.highlighted:hover {
+      background: #6BA797;
+      transform: translateY(-1px);
+    }
+    .btn-feedback {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--muted);
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.2s;
+    }
+    .btn-feedback.highlighted {
+      border-color: var(--gold);
+      background: var(--gold-light);
+      color: var(--token);
+      font-weight: 500;
+    }
+    .btn-feedback:hover { background: var(--gold-light); color: var(--token); }
+    .feedback-form { display: none; margin-top: 16px; }
+    .feedback-form.visible { display: block; }
+    .form-label { display: block; font-size: 13px; font-weight: 500; color: var(--token); margin-bottom: 6px; }
+    .form-select, .form-textarea, .form-input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--token);
+      outline: none;
+      transition: border-color 0.15s;
+      margin-bottom: 12px;
+    }
+    .form-select:focus, .form-textarea:focus, .form-input:focus { border-color: var(--gold); }
+    .form-textarea { resize: vertical; min-height: 80px; }
+    .btn-submit {
+      width: 100%;
+      padding: 13px;
+      border-radius: 12px;
+      border: none;
+      background: var(--gold);
+      color: white;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-submit:hover { opacity: 0.9; }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+    .divider {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      margin: 16px 0;
+    }
+    .optout-link {
+      display: block;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 20px;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .success-msg {
+      display: none;
+      text-align: center;
+      padding: 16px;
+      border-radius: 12px;
+      background: #E8F4F1;
+      color: var(--green);
+      font-size: 14px;
+      font-weight: 500;
+      margin-top: 12px;
+    }
+    .success-msg.visible { display: block; }
+    @media (max-width: 400px) {
+      .card { border-radius: 16px; padding: 24px 18px; }
+      .star-svg { width: 38px; height: 38px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+      </div>
+    </div>
+
+    <h1 class="hotel-name" id="hotel-name">Chargement...</h1>
+    <p class="greeting" id="greeting">Votre avis compte beaucoup pour nous.</p>
+
+    <p class="stars-label">Comment s'est passé votre séjour ?</p>
+    <div class="stars" id="stars-container" role="group" aria-label="Note de 1 à 5 étoiles">
+      <!-- Stars injected by JS -->
+    </div>
+
+    <div class="action-area" id="action-area">
+      <p class="stars-label" style="font-size:13px;color:var(--muted);margin-bottom:14px;">
+        Sélectionnez une note ci-dessus
+      </p>
+    </div>
+
+    <a class="optout-link" id="optout-link" style="display:none;">
+      Ne plus recevoir de SMS de cet hôtel
+    </a>
+  </div>
+
+  <script>
+    // Parse URL params
+    const params = new URLSearchParams(window.location.search);
+    const guestName = params.get('name') || 'Cher client';
+    const hotelName = params.get('hotel') || 'notre hôtel';
+    const googleUrl = params.get('google') || '';
+    const guestId = window.location.pathname.split('/g/')[1]?.replace(/\/$/, '') || '';
+
+    // Supabase config — injected at build time or from meta
+    const SUPABASE_URL = document.querySelector('meta[name="supabase-url"]')?.content || '';
+    const SUPABASE_ANON_KEY = document.querySelector('meta[name="supabase-anon"]')?.content || '';
+
+    // Populate UI
+    document.getElementById('hotel-name').textContent = hotelName;
+    document.getElementById('greeting').innerHTML =
+      `Bonjour <strong>${guestName}</strong>, merci pour votre séjour à ${hotelName} !<br/>Quelques secondes pour nous aider ?`;
+
+    // Render stars
+    const starsContainer = document.getElementById('stars-container');
+    let selectedRating = 0;
+
+    function renderStars(hovered) {
+      starsContainer.innerHTML = '';
+      for (let i = 1; i <= 5; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'star-btn';
+        btn.setAttribute('aria-label', `${i} étoile${i > 1 ? 's' : ''}`);
+        const filled = (hovered || selectedRating) >= i;
+        btn.innerHTML = `<svg class="star-svg" viewBox="0 0 24 24" fill="${filled ? '#C9A96E' : 'none'}" stroke="#C9A96E" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"/>
+        </svg>`;
+        btn.addEventListener('mouseenter', () => renderStars(i));
+        btn.addEventListener('mouseleave', () => renderStars(0));
+        btn.addEventListener('click', () => selectRating(i));
+        starsContainer.appendChild(btn);
+      }
+    }
+
+    renderStars(0);
+
+    function selectRating(rating) {
+      selectedRating = rating;
+      renderStars(0);
+      updateActionArea(rating);
+      trackRating(rating);
+    }
+
+    function updateActionArea(rating) {
+      const area = document.getElementById('action-area');
+      const optoutLink = document.getElementById('optout-link');
+      optoutLink.style.display = 'block';
+
+      if (rating >= 4) {
+        area.innerHTML = `
+          <p style="text-align:center;font-size:15px;font-weight:600;color:#2C2420;margin-bottom:14px;">
+            Merci ! Partagez votre expérience sur Google 🌟
+          </p>
+          <a href="${googleUrl || '#'}" target="_blank" class="btn-google highlighted" id="google-btn" onclick="trackGoogleClick()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+              <path d="M12 12.75c1.63 0 3.07.39 4.24.9 1.08.48 1.76 1.54 1.76 2.72V18H6v-1.62c0-1.19.68-2.24 1.76-2.73 1.17-.51 2.61-.9 4.24-.9zM4 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm1.13 1.1c-.37-.06-.74-.1-1.13-.1-.99 0-1.93.21-2.78.58C.48 14.9 0 15.62 0 16.43V18h4.5v-1.61c0-.83.23-1.61.63-2.29zM20 13c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4 3.43c0-.81-.48-1.53-1.22-1.85A6.95 6.95 0 0 0 20 14c-.39 0-.76.04-1.13.1.4.68.63 1.46.63 2.29V18H24v-1.57zM12 6c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"/>
+            </svg>
+            Donner mon avis sur Google
+          </a>
+          <button class="btn-feedback" onclick="toggleFeedback()" id="feedback-btn" style="margin-top:10px;">
+            Partager un commentaire privé à l'hôtel
+          </button>
+        `;
+      } else {
+        area.innerHTML = `
+          <p style="text-align:center;font-size:14px;color:var(--muted);margin-bottom:14px;">
+            Nous sommes désolés que votre séjour n'ait pas été parfait.<br/>
+            Partagez-nous ce qui pourrait être amélioré.
+          </p>
+          <button class="btn-feedback highlighted" onclick="toggleFeedback()" id="feedback-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            Envoyer un feedback privé à l'hôtel
+          </button>
+          <a href="${googleUrl || '#'}" target="_blank" class="btn-google" style="margin-top:10px;" onclick="trackGoogleClick()">
+            Laisser un avis Google quand même
+          </a>
+        `;
+      }
+
+      // Append feedback form
+      area.innerHTML += `
+        <div class="feedback-form" id="feedback-form">
+          <div class="divider">— Feedback privé —</div>
+          <label class="form-label">Catégorie</label>
+          <select class="form-select" id="fb-category">
+            <option value="">Sélectionner...</option>
+            <option value="propreté">Propreté</option>
+            <option value="service">Service</option>
+            <option value="literie">Literie</option>
+            <option value="bruit">Bruit</option>
+            <option value="technique">Problème technique</option>
+            <option value="autre">Autre</option>
+          </select>
+          <label class="form-label">Votre message *</label>
+          <textarea class="form-textarea" id="fb-message" placeholder="Décrivez ce qui pourrait être amélioré..."></textarea>
+          <label class="form-label">Téléphone (optionnel, pour être rappelé)</label>
+          <input class="form-input" id="fb-phone" type="tel" placeholder="06 12 34 56 78" />
+          <button class="btn-submit" id="fb-submit" onclick="submitFeedback()">Envoyer le feedback</button>
+          <div class="success-msg" id="fb-success">✓ Feedback envoyé. Merci pour votre retour !</div>
+        </div>
+      `;
+    }
+
+    function toggleFeedback() {
+      const form = document.getElementById('feedback-form');
+      if (form) {
+        form.classList.toggle('visible');
+      }
+    }
+
+    function trackRating(rating) {
+      if (!guestId || !SUPABASE_URL) return;
+      fetch(`${SUPABASE_URL}/rest/v1/guests?id=eq.${guestId}`, {
+        method: 'PATCH',
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal',
+        },
+        body: JSON.stringify({ rating_given: rating }),
+      }).catch(() => {});
+    }
+
+    function trackGoogleClick() {
+      if (!guestId || !SUPABASE_URL) return;
+      fetch(`${SUPABASE_URL}/rest/v1/guests?id=eq.${guestId}`, {
+        method: 'PATCH',
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal',
+        },
+        body: JSON.stringify({
+          went_to_google: true,
+          clicked_at: new Date().toISOString(),
+        }),
+      }).catch(() => {});
+    }
+
+    async function submitFeedback() {
+      const message = document.getElementById('fb-message').value.trim();
+      const category = document.getElementById('fb-category').value;
+      const phone = document.getElementById('fb-phone').value.trim();
+      const submitBtn = document.getElementById('fb-submit');
+
+      if (!message) {
+        document.getElementById('fb-message').style.borderColor = '#C97A7A';
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Envoi...';
+
+      try {
+        if (SUPABASE_URL && guestId) {
+          // Get hotel_id from guest
+          const guestRes = await fetch(`${SUPABASE_URL}/rest/v1/guests?id=eq.${guestId}&select=hotel_id`, {
+            headers: {
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            },
+          });
+          const guestData = await guestRes.json();
+          const hotelId = guestData[0]?.hotel_id;
+
+          if (hotelId) {
+            await fetch(`${SUPABASE_URL}/rest/v1/feedbacks`, {
+              method: 'POST',
+              headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=minimal',
+              },
+              body: JSON.stringify({
+                hotel_id: hotelId,
+                guest_id: guestId,
+                category: category || null,
+                message,
+                rating: selectedRating || null,
+                guest_phone: phone || null,
+              }),
+            });
+
+            // Mark feedback submitted
+            await fetch(`${SUPABASE_URL}/rest/v1/guests?id=eq.${guestId}`, {
+              method: 'PATCH',
+              headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=minimal',
+              },
+              body: JSON.stringify({ feedback_submitted: true }),
+            });
+          }
+        }
+
+        document.getElementById('fb-submit').style.display = 'none';
+        document.getElementById('fb-success').classList.add('visible');
+      } catch {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Envoyer le feedback';
+      }
+    }
+
+    // Opt-out
+    document.getElementById('optout-link')?.addEventListener('click', async () => {
+      if (!confirm('Confirmer : ne plus recevoir de SMS de cet hôtel ?')) return;
+
+      if (SUPABASE_URL && guestId) {
+        try {
+          const guestRes = await fetch(`${SUPABASE_URL}/rest/v1/guests?id=eq.${guestId}&select=hotel_id,phone`, {
+            headers: {
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            },
+          });
+          const guestData = await guestRes.json();
+          const { hotel_id, phone } = guestData[0] || {};
+
+          if (hotel_id && phone) {
+            await fetch(`${SUPABASE_URL}/rest/v1/opt_outs`, {
+              method: 'POST',
+              headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=minimal',
+              },
+              body: JSON.stringify({
+                hotel_id,
+                phone,
+                reason: 'opt-out via landing page',
+              }),
+            });
+
+            await fetch(`${SUPABASE_URL}/rest/v1/guests?id=eq.${guestId}`, {
+              method: 'PATCH',
+              headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=minimal',
+              },
+              body: JSON.stringify({ sms_status: 'opted_out' }),
+            });
+          }
+        } catch {}
+      }
+
+      document.getElementById('optout-link').textContent = '✓ Vous avez été désabonné(e)';
+      document.getElementById('optout-link').style.pointerEvents = 'none';
+    });
+  </script>
+</body>
+</html>
