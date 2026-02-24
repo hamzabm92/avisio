@@ -56,34 +56,37 @@ export default function ReviewsFeed({ feedbacks, loading = false }: ReviewsFeedP
           <p className="text-sm" style={{ color: '#8A7F78' }}>Aucun feedback reçu</p>
         </div>
       ) : (
-        <div className="divide-y" style={{ borderColor: '#EDE8E3' }}>
-          {feedbacks.slice(0, 4).map(fb => (
-            <div key={fb.id} className="p-6">
+        <div>
+          {feedbacks.slice(0, 4).map((fb, i) => (
+            <div
+              key={fb.id}
+              className="p-5 transition-colors"
+              style={{ borderTop: i > 0 ? '1px solid #EDE8E3' : undefined }}
+              onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#FDFCFA'; }}
+              onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; }}
+            >
               <div className="flex items-start justify-between gap-3 mb-2">
                 <div className="flex items-center gap-2">
+                  {!fb.is_read && (
+                    <span className="w-1.5 h-1.5 rounded-full shrink-0 mt-0.5" style={{ backgroundColor: '#C9A96E' }} />
+                  )}
                   {fb.category && (
                     <span
-                      className="text-xs px-2 py-0.5 rounded-full font-medium"
-                      style={{ backgroundColor: '#F5EDD8', color: '#C9A96E' }}
+                      className="text-xs px-2 py-0.5 rounded-full font-semibold"
+                      style={{ backgroundColor: 'rgba(201,169,110,0.12)', color: '#B8800E' }}
                     >
                       {CATEGORY_LABELS[fb.category] || fb.category}
                     </span>
                   )}
-                  {!fb.is_read && (
-                    <span
-                      className="w-1.5 h-1.5 rounded-full shrink-0"
-                      style={{ backgroundColor: '#C9A96E' }}
-                    />
-                  )}
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
                   {fb.rating && <Stars value={fb.rating} readonly size="sm" />}
-                  <span className="text-xs" style={{ color: '#8A7F78' }}>
+                  <span className="text-xs whitespace-nowrap" style={{ color: '#8A7F78' }}>
                     {formatDateShort(fb.created_at)}
                   </span>
                 </div>
               </div>
-              <p className="text-sm line-clamp-2" style={{ color: '#2C2420' }}>
+              <p className="text-sm leading-relaxed line-clamp-2" style={{ color: '#2C2420' }}>
                 {fb.message}
               </p>
             </div>

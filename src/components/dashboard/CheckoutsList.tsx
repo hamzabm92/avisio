@@ -50,25 +50,34 @@ export default function CheckoutsList({ guests, loading = false }: CheckoutsList
           <p className="text-sm" style={{ color: '#8A7F78' }}>Aucun départ aujourd'hui</p>
         </div>
       ) : (
-        <div className="divide-y" style={{ borderColor: '#EDE8E3' }}>
-          {guests.slice(0, 4).map(guest => (
-            <div key={guest.id} className="flex items-center gap-4 px-6 py-4">
+        <div>
+          {guests.slice(0, 4).map((guest, i) => (
+            <div
+              key={guest.id}
+              className="flex items-center gap-4 px-6 py-4 transition-colors"
+              style={{
+                borderTop: i > 0 ? '1px solid #EDE8E3' : undefined,
+                cursor: 'default',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#FDFCFA'; }}
+              onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; }}
+            >
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-semibold shrink-0"
-                style={{ backgroundColor: '#F5EDD8', color: '#C9A96E' }}
+                className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold shrink-0"
+                style={{ backgroundColor: 'rgba(201,169,110,0.12)', color: '#B8800E' }}
               >
                 {guest.first_name.charAt(0).toUpperCase()}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate" style={{ color: '#2C2420' }}>
+                <p className="text-sm font-semibold truncate" style={{ color: '#2C2420' }}>
                   {guest.first_name}
                   {guest.room_number && (
-                    <span className="ml-1.5 text-xs" style={{ color: '#8A7F78' }}>
+                    <span className="ml-1.5 text-xs font-normal" style={{ color: '#8A7F78' }}>
                       Ch. {guest.room_number}
                     </span>
                   )}
                 </p>
-                <p className="text-xs" style={{ color: '#8A7F78' }}>
+                <p className="text-xs mt-0.5" style={{ color: '#8A7F78' }}>
                   {formatPhoneDisplay(guest.phone)}
                 </p>
               </div>

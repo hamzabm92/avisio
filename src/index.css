@@ -45,6 +45,12 @@ button {
 
 input, select, textarea {
   font-family: 'DM Sans', sans-serif;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Gold focus ring on all inputs */
+input:focus, textarea:focus, select:focus {
+  box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.2);
 }
 
 /* Scrollbar styling */

@@ -264,24 +264,24 @@ export default function Checkouts() {
                 <div
                   key={guest.id}
                   className="bg-white rounded-2xl p-4"
-                  style={{ border: '1px solid #EDE8E3' }}
+                  style={{ border: '1px solid #EDE8E3', boxShadow: '0 1px 6px rgba(44,36,32,0.06)' }}
                 >
-                  <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-3">
                       <div
                         className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold shrink-0"
-                        style={{ backgroundColor: '#F5EDD8', color: '#C9A96E' }}
+                        style={{ backgroundColor: 'rgba(201,169,110,0.12)', color: '#B8800E' }}
                       >
                         {guest.first_name.charAt(0).toUpperCase()}
                       </div>
                       <div>
-                        <p className="font-medium text-sm" style={{ color: '#2C2420' }}>
+                        <p className="font-semibold text-sm" style={{ color: '#2C2420' }}>
                           {guest.first_name}
                           {guest.room_number && (
-                            <span className="ml-1.5 text-xs" style={{ color: '#8A7F78' }}>Ch. {guest.room_number}</span>
+                            <span className="ml-1.5 text-xs font-normal" style={{ color: '#8A7F78' }}>Ch. {guest.room_number}</span>
                           )}
                         </p>
-                        <p className="text-xs font-mono mt-0.5" style={{ color: '#8A7F78' }}>
+                        <p className="text-xs mt-0.5 font-mono" style={{ color: '#8A7F78' }}>
                           {formatPhoneDisplay(guest.phone)}
                         </p>
                       </div>
@@ -291,8 +291,10 @@ export default function Checkouts() {
                   {guest.sms_status === 'pending' && (
                     <button
                       onClick={() => setShowSMSModal(guest)}
-                      className="mt-3 w-full flex items-center justify-center gap-2 py-2 rounded-xl text-sm font-medium transition-colors"
-                      style={{ backgroundColor: '#F5EDD8', color: '#C9A96E' }}
+                      className="mt-3 w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold transition-colors"
+                      style={{ backgroundColor: '#FEF3E2', color: '#B8800E', border: '1px solid rgba(201,169,110,0.3)' }}
+                      onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#FDECD0'; }}
+                      onMouseLeave={e => { e.currentTarget.style.backgroundColor = '#FEF3E2'; }}
                     >
                       <Send size={14} />
                       Envoyer SMS
@@ -316,16 +318,21 @@ export default function Checkouts() {
                 </thead>
                 <tbody>
                   {guests.map(guest => (
-                    <tr key={guest.id} style={{ borderTop: '1px solid #EDE8E3' }}>
+                    <tr
+                      key={guest.id}
+                      style={{ borderTop: '1px solid #EDE8E3', transition: 'background-color 0.15s ease' }}
+                      onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#FDFCFA'; }}
+                      onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; }}
+                    >
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
                           <div
-                            className="w-8 h-8 rounded-xl flex items-center justify-center text-xs font-semibold shrink-0"
-                            style={{ backgroundColor: '#F5EDD8', color: '#C9A96E' }}
+                            className="w-8 h-8 rounded-xl flex items-center justify-center text-xs font-bold shrink-0"
+                            style={{ backgroundColor: 'rgba(201,169,110,0.12)', color: '#B8800E' }}
                           >
                             {guest.first_name.charAt(0).toUpperCase()}
                           </div>
-                          <span className="text-sm font-medium" style={{ color: '#2C2420' }}>
+                          <span className="text-sm font-semibold" style={{ color: '#2C2420' }}>
                             {guest.first_name}
                           </span>
                         </div>

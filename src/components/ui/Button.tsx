@@ -12,15 +12,15 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const VARIANT_STYLES: Record<Variant, string> = {
-  primary: 'text-white font-semibold shadow-sm hover:opacity-90 active:opacity-80',
-  secondary: 'font-medium border hover:bg-[#F5EDD8] active:bg-[#EDE8E3]',
-  ghost: 'font-medium hover:bg-[#F5EDD8] active:bg-[#EDE8E3]',
-  danger: 'text-white font-semibold shadow-sm hover:opacity-90 active:opacity-80',
+  primary: 'text-white font-semibold shadow-sm hover:opacity-90 active:scale-[0.98]',
+  secondary: 'font-medium border hover:bg-[#F5EDD8] active:bg-[#EDE8E3] active:scale-[0.98]',
+  ghost: 'font-medium hover:bg-[#F5EDD8] active:bg-[#EDE8E3] active:scale-[0.98]',
+  danger: 'text-white font-semibold shadow-sm hover:opacity-90 active:scale-[0.98]',
 };
 
 const VARIANT_INLINE: Record<Variant, React.CSSProperties> = {
   primary: { backgroundColor: '#C9A96E', color: 'white' },
-  secondary: { backgroundColor: 'transparent', color: '#2C2420', borderColor: '#EDE8E3' },
+  secondary: { backgroundColor: 'white', color: '#2C2420', borderColor: '#D9D1C9' },
   ghost: { backgroundColor: 'transparent', color: '#2C2420' },
   danger: { backgroundColor: '#C97A7A', color: 'white' },
 };
